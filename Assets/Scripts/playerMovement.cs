@@ -2,10 +2,16 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    // movement variables
+    // horiz movement variables
     private float horizVelocity;
     [SerializeField] float speed;
+
+    // jump variables
     [SerializeField] float jumpingPower;
+    [SerializeField] float coyoteTime;
+    private float coyoteTimer;
+    [SerializeField] float jumpBufferTime;
+    private float jumpBufferTimer;
 
     // player object variables
     private Rigidbody2D rb;
@@ -25,19 +31,37 @@ public class playerMovement : MonoBehaviour
         // move direction
         horizVelocity = Input.GetAxisRaw("Horizontal");
 
-        // player jump
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        // coyote time
+        if (IsGrounded())
         {
-            if (IsGrounded())
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-            }
+            coyoteTimer = coyoteTime;
+        }
+        else
+        {
+            coyoteTimer -= Time.deltaTime;
+        }
+
+        // jump buffering
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpBufferTimer = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferTimer -= Time.deltaTime;
+        }
+
+        // player jump
+        if (jumpBufferTimer > 0f && coyoteTimer > 0f)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
         }
 
         // control jump height
         if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
+            coyoteTimer = 0f;
         }
 
         Flip();
