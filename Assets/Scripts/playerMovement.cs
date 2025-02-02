@@ -3,7 +3,7 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
     // movement variables
-    private float horizVeloc;
+    private float horizVelocity;
     [SerializeField] float speed;
     [SerializeField] float jumpingPower;
 
@@ -23,7 +23,7 @@ public class playerMovement : MonoBehaviour
     void Update()
     {
         // move direction
-        horizVeloc = Input.GetAxisRaw("Horizontal");
+        horizVelocity = Input.GetAxisRaw("Horizontal");
 
         // player jump
         if (Input.GetButtonDown("Jump") && IsGrounded())
@@ -46,7 +46,7 @@ public class playerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // horizontal movement
-        rb.linearVelocity = new Vector2(horizVeloc * speed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(horizVelocity * speed, rb.linearVelocity.y);
     }
 
     private bool IsGrounded()
@@ -56,7 +56,7 @@ public class playerMovement : MonoBehaviour
 
     private void Flip()
     {
-        if (isFacingRight && horizVeloc < 0f || !isFacingRight && horizVeloc > 0f)
+        if (isFacingRight && horizVelocity < 0f || !isFacingRight && horizVelocity > 0f)
         {
             isFacingRight = !isFacingRight;
             Vector3 localScale = transform.localScale;
