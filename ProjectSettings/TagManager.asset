@@ -44,7 +44,7 @@ TagManager:
   - name: Player
     uniqueID: 2478875137
     locked: 0
-  - name: Ground
+  - name: Room
     uniqueID: 4278507267
     locked: 0
   m_RenderingLayers:

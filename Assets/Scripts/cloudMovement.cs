@@ -5,10 +5,10 @@ public class cloudMovement : MonoBehaviour
     [SerializeField] GameObject player;
 
     // cloud movement
-    [SerializeField] float speed; // speed to follow player
+    [SerializeField] float baseSpeed; // speed to follow player
     [SerializeField] float maxSpeed; // max speed to follow player
-    [SerializeField] float yDistFromPlayer;
-    private float horizVelocity;
+    [SerializeField] float yDistFromPlayer; // offset above player
+    [SerializeField] float yLerpSpeed;
     private Rigidbody2D rb;
 
     void Start()
@@ -16,19 +16,22 @@ public class cloudMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // get player position
         Vector2 targetPosition = player.transform.position;
 
-        // calculate velocity to follow player
-        float targetVelocity = (targetPosition.x - transform.position.x) * speed;
-        horizVelocity = Mathf.Clamp(targetVelocity, -maxSpeed, maxSpeed);
-    }
+        // calculate horizontal velocity
+        float distanceX = Mathf.Abs(targetPosition.x - transform.position.x);
+        float speedMultiplier = Mathf.Clamp(distanceX * 0.5f, 1f, maxSpeed); // increases speed if far from player
+        float targetVelocityX = Mathf.Lerp(rb.linearVelocity.x, (targetPosition.x - transform.position.x) * baseSpeed * speedMultiplier, 0.1f);
 
-    void FixedUpdate()
-    {
-        // apply velocity to cloud
-        transform.position = new Vector2(transform.position.x + horizVelocity * Time.deltaTime, player.transform.position.y + yDistFromPlayer);
+        // apply horizontal velocity
+        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+
+        // smooth y-movement
+        float targetY = targetPosition.y + yDistFromPlayer;
+        float smoothedY = Mathf.Lerp(transform.position.y, targetY, Time.fixedDeltaTime * yLerpSpeed);
+        transform.position = new Vector2(transform.position.x, smoothedY);
     }
 }
