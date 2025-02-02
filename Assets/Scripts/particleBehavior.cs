@@ -19,7 +19,7 @@ public class particleBehavior : MonoBehaviour
         // update scale
         transform.localScale = new Vector3(currentScale.x, newHeight, currentScale.z);
 
-        // move object upwards, to make it seem like bottom is not decaying
+        // move object downwards, to make it seem like bottom is not decaying
         float heightDifference = (currentScale.y - newHeight) * 0.5f;
         transform.position += new Vector3(0, -heightDifference, 0);
     }

@@ -29,9 +29,7 @@ public class cloudMovement : MonoBehaviour
         // apply horizontal velocity
         rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
 
-        // smooth y-movement
-        float targetY = targetPosition.y + yDistFromPlayer;
-        float smoothedY = Mathf.Lerp(transform.position.y, targetY, Time.fixedDeltaTime * yLerpSpeed);
-        transform.position = new Vector2(transform.position.x, smoothedY);
+        // adjust y dist of cloud from player
+        transform.position = new Vector2(transform.position.x, player.transform.position.y + yDistFromPlayer);
     }
 }
