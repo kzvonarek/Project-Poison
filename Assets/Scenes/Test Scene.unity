@@ -6665,7 +6665,7 @@ MonoBehaviour:
   baseSpeed: 12
   maxSpeed: 15
   yDistFromPlayer: 2
-  yLerpSpeed: 5
+  yLerpSpeed: 2.5
 --- !u!50 &1984015118
 Rigidbody2D:
   serializedVersion: 5
